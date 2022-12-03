@@ -35,26 +35,51 @@ function App() {
   }
   const firstUpdate = useRef(true);
   useEffect(() => {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 29b4eb5d613375dea3fed0c1fce59952fa47b71d
     if (firstUpdate.current) {
       firstUpdate.current = false;
       return;
     }
+<<<<<<< HEAD
 
     if (choiceTwo) {
 	    let first = choiceOne
 	    let second = choiceTwo
 	    first.src === second.src && first.id !== second.id ? console.log('ok') : console.log('nope')
       resetTurn()
+=======
+if (choiceTwo) {
+	    let first = choiceOne
+	    let second = choiceTwo
+	    first.src === second.src && first.id !== second.id ? console.log('ok') : console.log('nope')
+	      setChoiceOne(null)
+	      setChoiceTwo(null)
+	      setTurns(turns + 1)
+	     
+>>>>>>> 29b4eb5d613375dea3fed0c1fce59952fa47b71d
 }
   }, [choiceTwo]);
 
   //reset choices & increase turn
+<<<<<<< HEAD
   const resetTurn = () => { 
     setChoiceOne(null)
     setChoiceTwo(null)
     setTurns(turns + 1)
    }
+=======
+  // const resetTurn = () => { 
+  //   setChoiceOne(null)
+  //   setChoiceTwo(null)
+  //   setTurns(turns + 1)
+  //  }
+
+
+
+>>>>>>> 29b4eb5d613375dea3fed0c1fce59952fa47b71d
 
    
   return (

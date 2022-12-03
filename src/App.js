@@ -35,31 +35,28 @@ function App() {
   }
   const firstUpdate = useRef(true);
   useEffect(() => {
+
     if (firstUpdate.current) {
       firstUpdate.current = false;
       return;
     }
-if (choiceTwo) {
+
+    if (choiceTwo) {
 	    let first = choiceOne
 	    let second = choiceTwo
 	    first.src === second.src && first.id !== second.id ? console.log('ok') : console.log('nope')
-	      setChoiceOne(null)
-	      setChoiceTwo(null)
-	      setTurns(turns + 1)
-	     
+      resetTurn()
 }
   }, [choiceTwo]);
 
   //reset choices & increase turn
-  // const resetTurn = () => { 
-  //   setChoiceOne(null)
-  //   setChoiceTwo(null)
-  //   setTurns(turns + 1)
-  //  }
+  const resetTurn = () => { 
+    setChoiceOne(null)
+    setChoiceTwo(null)
+    setTurns(turns + 1)
+   }
 
-
-
-
+   
   return (
     <div className="App">
       <h1>Magic Match</h1>

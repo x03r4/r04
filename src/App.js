@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import SingleCard from "./components/SingleCard";
@@ -17,7 +18,6 @@ function App() {
   const [choiceOne, setChoiceOne] = useState(null);
   const [choiceTwo, setChoiceTwo] = useState(null);
 
-
   //shuffle cards
   const shuffleCards = () => {
     const shuffledCards = [...cardImages, ...cardImages]
@@ -29,57 +29,59 @@ function App() {
   };
 
   //handleChoice
-  const handleChoice = (card) => { 
-    !choiceOne ? setChoiceOne(card) : setChoiceTwo(card)
-    
-  }
+  const handleChoice = (card) => {
+    !choiceOne ? setChoiceOne(card) : setChoiceTwo(card);
+  };
+  //reset choices & increase turn
+  //jeśli chcę wrzucić funkcję do tablicy zależności w useEffect
+  //objęcie jej w useCallback niweluje ostrzeżenie w konsoli
+  const resetTurn = useCallback(() => {
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setTurns((prevTurns) => prevTurns + 1);
+  }, []);
+
   const firstUpdate = useRef(true);
+
   useEffect(() => {
     if (firstUpdate.current) {
       firstUpdate.current = false;
       return;
     }
-
     if (choiceOne && choiceTwo) {
-	    // let first = choiceOne
-	    // let second = choiceTwo
-	    // first.src === second.src && first.id !== second.id ? console.log('ok') : console.log('nope')
-      if(choiceOne.src === choiceTwo.src) {
-        setCards(prevCards => {
+
+      if (choiceOne.src === choiceTwo.src) {
+        setCards((prevCards) => {
           return prevCards.map((card) => {
             if (card.src === choiceOne.src) {
-              return {...card, matched: true}
+              return { ...card, matched: true };
             } else {
-              return card
+              return card;
             }
-          })
-        })
-        resetTurn()
+          });
+        });
+        resetTurn();
       } else {
-
-        resetTurn()
+        setTimeout(() => {
+          resetTurn();
+        }, 1000);
       }
-      // resetTurn()
-}
-  }, [choiceTwo]);
+    }
+  }, [choiceOne, choiceTwo, resetTurn]);
 
-  console.log(cards)
-  //reset choices & increase turn
-  const resetTurn = () => { 
-    setChoiceOne(null)
-    setChoiceTwo(null)
-    setTurns(turns + 1)
-   }
-
-   
   return (
     <div className="App">
       <h1>Magic Match</h1>
       <button onClick={shuffleCards}>New Game</button>
       <div className="card-grid">
-      {cards.map((card) => (
-        <SingleCard key={card.id} card={card} handleChoice={handleChoice}/>
-          ))}
+        {cards.map((card) => (
+          <SingleCard
+            key={card.id}
+            card={card}
+            handleChoice={handleChoice}
+            flipped={card === choiceOne || card === choiceTwo || card.matched}
+          />
+        ))}
       </div>
     </div>
   );
